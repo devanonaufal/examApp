@@ -1,0 +1,57 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "src/assets/fonts/AlbertSans-Bold.ttf",
+      "sha1": "665c45e9c18d41c69a962f07902e85425d77b00e"
+    },
+    {
+      "path": "src/assets/fonts/AlbertSans-Medium.ttf",
+      "sha1": "153e6dc1f2cce2293d899db162ac059ae48d3f70"
+    },
+    {
+      "path": "src/assets/fonts/AlbertSans-Regular.ttf",
+      "sha1": "38520c5555550220fe97308a587a69bd1ec899db"
+    },
+    {
+      "path": "src/assets/fonts/AlbertSans-SemiBold.ttf",
+      "sha1": "27b77f0f36c519cb2fcfef4534227ae8afbbc47f"
+    },
+    {
+      "path": "src/assets/fonts/Aldrich-Regular.ttf",
+      "sha1": "9086f218d9c571c3cc3fd412ec3f9204c142eaeb"
+    },
+    {
+      "path": "src/assets/fonts/Alef-Bold.ttf",
+      "sha1": "ad234751833d229ada7f69049407ed8f1e1db0cd"
+    },
+    {
+      "path": "src/assets/fonts/Alef-Regular.ttf",
+      "sha1": "6cebb24b5d0597be61bf396439703b1ecd000411"
+    },
+    {
+      "path": "src/assets/fonts/AlegreyaSans-Bold.ttf",
+      "sha1": "f88734a28bac669376d66662dac4fa81cb59705e"
+    },
+    {
+      "path": "src/assets/fonts/AlegreyaSans-Regular.ttf",
+      "sha1": "f7948392bdd91cb15db72254357f32d25b8566c0"
+    },
+    {
+      "path": "src/assets/fonts/Amiri-Bold.ttf",
+      "sha1": "7ef8ec23e521e60b26113f577e4d61bcb7d04bfc"
+    },
+    {
+      "path": "src/assets/fonts/Amiri-Regular.ttf",
+      "sha1": "54761ecc5c999143024e969a8416465f91edc0e3"
+    },
+    {
+      "path": "src/assets/fonts/Overpass-ExtraBold.ttf",
+      "sha1": "f126035fbd60cf3c0de9297f3876affd8076024f"
+    },
+    {
+      "path": "src/assets/fonts/Overpass-ExtraBoldItalic.ttf",
+      "sha1": "28353aa77f278658e19194d5dc288db8b3d0c715"
+    }
+  ]
+}
