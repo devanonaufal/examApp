@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -7,8 +7,10 @@ import {
   FlatList,
   Image,
   Alert,
+  BackHandler,
 } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { useFocusEffect } from '@react-navigation/native';
 import { soalData } from '../api/soal';
 
 export type RootStackParamList = {
@@ -16,6 +18,10 @@ export type RootStackParamList = {
   Home: undefined;
   Exam: undefined;
   Result: { answers: (number | null)[] };
+  History: undefined;
+  Profile: undefined;
+  About: undefined;
+  MainTab?: { screen?: string };
 };
 
 type ExamScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Exam'>;
@@ -23,11 +29,61 @@ type Props = {
   navigation: ExamScreenNavigationProp;
 };
 
+const DURASI_UJIAN = 10 * 60; // 10 menit (dalam detik)
+
 const ExamScreen: React.FC<Props> = ({ navigation }) => {
   const [current, setCurrent] = useState(0);
   const [answers, setAnswers] = useState<(number | null)[]>(Array(soalData.length).fill(null));
+  const [timeLeft, setTimeLeft] = useState(DURASI_UJIAN);
   const soal = soalData[current];
   const selected = answers[current];
+
+  // Konfirmasi keluar saat tekan tombol back
+  useFocusEffect(
+    React.useCallback(() => {
+      const onBackPress = () => {
+        Alert.alert(
+          'Keluar dari Ujian',
+          'Yakin ingin keluar? Jawaban ujianmu akan hilang.',
+          [
+            { text: 'Batal', style: 'cancel', onPress: () => {} },
+            {
+              text: 'Keluar',
+              style: 'destructive',
+              onPress: () => navigation.replace('MainTab', { screen: 'Home' }),
+            },
+          ]
+        );
+        return true;
+      };
+      const subscription = BackHandler.addEventListener('hardwareBackPress', onBackPress);
+      return () => {
+        subscription.remove();
+      };
+    }, [navigation])
+  );
+
+  // TIMER EFFECT
+  useEffect(() => {
+    if (timeLeft <= 0) {
+      Alert.alert(
+        'Waktu Habis!',
+        'Waktu ujian sudah habis. Jawaban akan dikirim otomatis.',
+        [
+          {
+            text: 'OK',
+            onPress: () => navigation.replace('Result', { answers }),
+          },
+        ],
+        { cancelable: false }
+      );
+      return;
+    }
+    const timer = setInterval(() => {
+      setTimeLeft(t => t - 1);
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [timeLeft, navigation, answers]);
 
   const handleSelect = (idx: number) => {
     const newAnswers = [...answers];
@@ -38,23 +94,6 @@ const ExamScreen: React.FC<Props> = ({ navigation }) => {
   const handleNext = () => {
     if (current < soalData.length - 1) {
       setCurrent(current + 1);
-    } else {
-      const belumDijawab = answers.some((ans) => ans === null);
-      if (belumDijawab) {
-        Alert.alert(
-          'Konfirmasi',
-          'Masih ada soal yang belum dijawab. Yakin ingin menyelesaikan ujian?',
-          [
-            { text: 'Batal', style: 'cancel' },
-            {
-              text: 'Yakin',
-              onPress: () => navigation.replace('Result', { answers }),
-            },
-          ]
-        );
-      } else {
-        navigation.replace('Result', { answers });
-      }
     }
   };
 
@@ -62,8 +101,41 @@ const ExamScreen: React.FC<Props> = ({ navigation }) => {
     if (current > 0) setCurrent(current - 1);
   };
 
+  const handleSelesai = () => {
+    const belumDijawab = answers.some((ans) => ans === null);
+    if (belumDijawab) {
+      Alert.alert(
+        'Konfirmasi',
+        'Masih ada soal yang belum dijawab. Yakin ingin menyelesaikan ujian?',
+        [
+          { text: 'Batal', style: 'cancel' },
+          {
+            text: 'Yakin',
+            onPress: () => navigation.replace('Result', { answers }),
+          },
+        ]
+      );
+    } else {
+      navigation.replace('Result', { answers });
+    }
+  };
+
+  // Format waktu mm:ss
+  const formatTime = (detik: number) => {
+    const m = Math.floor(detik / 60);
+    const s = detik % 60;
+    return `${m}:${s.toString().padStart(2, '0')}`;
+  };
+
   return (
     <View style={styles.container}>
+      {/* TIMER */}
+      <View style={styles.timerBox}>
+        <Text style={styles.timerText}>
+          Sisa Waktu: {formatTime(timeLeft)}
+        </Text>
+      </View>
+
       {/* PANEL INFO UJIAN */}
       <View style={styles.infoPanel}>
         <Text style={styles.infoTitle}>Ujian: Matematika</Text>
@@ -121,13 +193,7 @@ const ExamScreen: React.FC<Props> = ({ navigation }) => {
         {soal.desc && (
           <Text style={styles.desc}>{soal.desc}</Text>
         )}
-        {soal.image && (
-          <Image
-            source={soal.image}
-            style={styles.examImage}
-            resizeMode="contain"
-          />
-        )}
+        {/* Tidak ada render gambar soal.image */}
         <FlatList
           data={soal.options}
           renderItem={({ item, index }) => (
@@ -156,9 +222,6 @@ const ExamScreen: React.FC<Props> = ({ navigation }) => {
                 ]}>
                   {item}
                 </Text>
-                {selected === index && (
-                  <Text style={styles.checkMark}>✓</Text>
-                )}
               </View>
             </TouchableOpacity>
           )}
@@ -166,6 +229,7 @@ const ExamScreen: React.FC<Props> = ({ navigation }) => {
         />
       </View>
 
+      {/* Tombol Navigasi */}
       <View style={styles.rowButton}>
         <TouchableOpacity
           style={[styles.navBtn, current === 0 && styles.disabledBtn]}
@@ -174,14 +238,22 @@ const ExamScreen: React.FC<Props> = ({ navigation }) => {
         >
           <Text style={styles.nextText}>Sebelumnya</Text>
         </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.navBtn}
-          onPress={handleNext}
-        >
-          <Text style={styles.nextText}>
-            {current === soalData.length - 1 ? 'Selesai' : 'Selanjutnya'}
-          </Text>
-        </TouchableOpacity>
+
+        {current < soalData.length - 1 ? (
+          <TouchableOpacity
+            style={styles.navBtn}
+            onPress={handleNext}
+          >
+            <Text style={styles.nextText}>Selanjutnya</Text>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity
+            style={[styles.navBtn, { backgroundColor: '#00b894' }]}
+            onPress={handleSelesai}
+          >
+            <Text style={styles.nextText}>Selesai</Text>
+          </TouchableOpacity>
+        )}
       </View>
     </View>
   );
@@ -190,6 +262,19 @@ const ExamScreen: React.FC<Props> = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1, backgroundColor: '#f6f8fc', justifyContent: 'center', alignItems: 'center', padding: 16
+  },
+  timerBox: {
+    backgroundColor: '#ffeaa7',
+    padding: 10,
+    borderRadius: 12,
+    marginBottom: 10,
+    alignSelf: 'center',
+  },
+  timerText: {
+    fontFamily: 'AlbertSans-Bold',
+    fontSize: 16,
+    color: '#d35400',
+    textAlign: 'center',
   },
   infoPanel: {
     width: '100%',
@@ -283,15 +368,6 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     textAlign: 'center',
   },
-  examImage: {
-    width: 180,
-    height: 120,
-    marginBottom: 12,
-    borderRadius: 10,
-    alignSelf: 'center',
-    backgroundColor: '#e9ecef',
-  },
-  // TAMBAHAN STYLE UNTUK LABEL OPSI & CHECKLIST
   rowOpsi: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -315,19 +391,6 @@ const styles = StyleSheet.create({
   },
   badgeTextActive: {
     color: '#fff',
-  },
-  checkMark: {
-    fontSize: 18,
-    color: '#fff',
-    marginLeft: 'auto',
-    backgroundColor: '#00b894',
-    borderRadius: 12,
-    width: 24,
-    height: 24,
-    textAlign: 'center',
-    textAlignVertical: 'center',
-    fontWeight: 'bold',
-    lineHeight: 24,
   },
   option: {
     backgroundColor: '#f3f6fa', borderRadius: 10, paddingVertical: 14, paddingHorizontal: 20,

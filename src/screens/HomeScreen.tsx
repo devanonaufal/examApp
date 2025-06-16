@@ -34,14 +34,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Daftar Ujian</Text>
-      
-      {/* Tombol Riwayat Ujian */}
-      <TouchableOpacity
-        style={styles.menuBtn}
-        onPress={() => navigation.replace('History')}
-      >
-        <Text style={styles.menuBtnText}>Riwayat Ujian</Text>
-      </TouchableOpacity>
+      {/* HAPUS SEMUA tombol menu manual di bawah ini! */}
 
       <FlatList
         data={data}
@@ -60,19 +53,6 @@ const styles = StyleSheet.create({
   header: {
     fontSize: 26, fontWeight: 'bold', color: '#2d3436', marginBottom: 10,
     alignSelf: 'center'
-  },
-  menuBtn: {
-    backgroundColor: '#0984e3',
-    paddingVertical: 12,
-    borderRadius: 10,
-    alignItems: 'center',
-    marginBottom: 20,
-  },
-  menuBtnText: {
-    color: '#fff',
-    fontSize: 16,
-    fontFamily: 'AlbertSans-Bold',
-    fontWeight: 'bold',
   },
   card: {
     backgroundColor: '#f2f2f2', borderRadius: 12, padding: 20, marginBottom: 14,

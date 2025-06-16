@@ -1,57 +1,97 @@
-import React from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
-import { StackNavigationProp } from '@react-navigation/stack';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-type RootStackParamList = {
-  Welcome: undefined;
-  Home: undefined;
-  Exam: undefined;
-  Result: { answers: (number | null)[] };
-  History: undefined;
+type HistoryItem = {
+  id: string;
+  namaUjian: string;
+  tanggal: string;
+  skor: number;
+  total: number;
 };
 
-type HistoryScreenNavigationProp = StackNavigationProp<RootStackParamList, 'History'>;
 type Props = {
-  navigation: HistoryScreenNavigationProp;
+  navigation: any;
 };
-
-const dummyHistory = [
-  { id: '1', namaUjian: 'Ujian Matematika', tanggal: '10 Juni 2025', skor: 8 },
-  { id: '2', namaUjian: 'Ujian IPA', tanggal: '11 Juni 2025', skor: 7 },
-];
 
 const HistoryScreen: React.FC<Props> = ({ navigation }) => {
+  const [history, setHistory] = useState<HistoryItem[]>([]);
+
+  // Ambil dan refresh history dari AsyncStorage
+  const fetchHistory = useCallback(async () => {
+    try {
+      const res = await AsyncStorage.getItem('history');
+      setHistory(res ? JSON.parse(res) : []);
+    } catch {
+      setHistory([]);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchHistory();
+    const unsubscribe = navigation.addListener('focus', fetchHistory);
+    return unsubscribe;
+  }, [navigation, fetchHistory]);
+
+  const clearHistory = async () => {
+    await AsyncStorage.removeItem('history');
+    setHistory([]);
+  };
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Riwayat Ujian</Text>
+      <Text style={styles.header}>Riwayat Ujian</Text>
       <FlatList
-        data={dummyHistory}
+        data={history}
         renderItem={({ item }) => (
-          <View style={styles.item}>
-            <Text style={styles.examName}>{item.namaUjian}</Text>
-            <Text style={styles.detail}>{item.tanggal} | Skor: {item.skor}</Text>
+          <View style={styles.card}>
+            <Text style={styles.title}>{item.namaUjian}</Text>
+            <Text style={styles.date}>{item.tanggal}</Text>
+            <Text style={styles.skor}>Skor: {item.skor} / {item.total}</Text>
           </View>
         )}
         keyExtractor={item => item.id}
+        ListEmptyComponent={
+          <Text style={styles.empty}>Belum ada riwayat ujian.</Text>
+        }
+        contentContainerStyle={{ flexGrow: 1 }}
       />
-      <TouchableOpacity style={styles.btn} onPress={() => navigation.replace('Home')}>
-        <Text style={styles.btnText}>Kembali ke Home</Text>
+      {history.length > 0 && (
+        <TouchableOpacity style={styles.clearBtn} onPress={clearHistory}>
+          <Text style={styles.clearBtnText}>Hapus Semua Riwayat</Text>
+        </TouchableOpacity>
+      )}
+      <TouchableOpacity
+        style={styles.homeBtn}
+        onPress={() => navigation.replace('MainTab', { screen: 'Home' })}  // ← Navigasi ke Home tab
+      >
+        <Text style={styles.homeBtnText}>Kembali ke Home</Text>
       </TouchableOpacity>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#f6f8fc', padding: 16 },
-  title: { fontSize: 24, fontFamily: 'AlbertSans-Bold', color: '#0984e3', marginBottom: 18, alignSelf: 'center' },
-  item: {
-    backgroundColor: '#fff', borderRadius: 12, padding: 16, marginBottom: 10,
-    shadowColor: '#000', shadowOpacity: 0.06, shadowRadius: 5, elevation: 1,
+  container: { flex: 1, backgroundColor: '#fff', padding: 16 },
+  header: {
+    fontSize: 22, fontWeight: 'bold', color: '#0984e3', marginBottom: 16, alignSelf: 'center',
+    fontFamily: 'AlbertSans-Bold'
   },
-  examName: { fontSize: 16, fontFamily: 'AlbertSans-Bold', color: '#222f3e' },
-  detail: { fontSize: 14, fontFamily: 'AlbertSans-Regular', color: '#636e72', marginTop: 2 },
-  btn: { backgroundColor: '#00b894', padding: 14, borderRadius: 14, alignItems: 'center', marginTop: 24 },
-  btnText: { color: '#fff', fontFamily: 'AlbertSans-Bold', fontSize: 16 }
+  card: {
+    backgroundColor: '#f1f2f6', padding: 18, borderRadius: 12, marginBottom: 12, elevation: 1
+  },
+  title: { fontSize: 18, fontWeight: 'bold', color: '#00b894', fontFamily: 'AlbertSans-Bold' },
+  date: { fontSize: 14, color: '#636e72', marginBottom: 4, fontFamily: 'AlbertSans-Regular' },
+  skor: { fontSize: 16, color: '#222f3e', fontWeight: 'bold', fontFamily: 'AlbertSans-Bold' },
+  empty: { textAlign: 'center', marginTop: 40, color: '#636e72', fontFamily: 'AlbertSans-Regular' },
+  clearBtn: {
+    backgroundColor: '#d63031', borderRadius: 16, alignItems: 'center', marginTop: 8, paddingVertical: 12
+  },
+  clearBtnText: { color: '#fff', fontSize: 15, fontWeight: 'bold', fontFamily: 'AlbertSans-Bold' },
+  homeBtn: {
+    backgroundColor: '#0984e3', borderRadius: 16, alignItems: 'center', marginTop: 16, paddingVertical: 14
+  },
+  homeBtnText: { color: '#fff', fontSize: 16, fontWeight: 'bold', fontFamily: 'AlbertSans-Bold' }
 });
 
 export default HistoryScreen;

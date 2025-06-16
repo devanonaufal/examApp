@@ -2,10 +2,9 @@ import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 
-// Tambahkan ini:
 type RootStackParamList = {
   Welcome: undefined;
-  Home: undefined;
+  MainTab: { screen?: string } | undefined; // ← Tambahkan MainTab!
   Exam: undefined;
   Result: { answers: (number | null)[] };
   History?: undefined;
@@ -30,7 +29,7 @@ const WelcomeScreen: React.FC<Props> = ({ navigation }) => {
       <Text style={styles.subtitle}>Aplikasi Ujian Online Sekolah</Text>
       <TouchableOpacity
         style={styles.startBtn}
-        onPress={() => navigation.replace('Home')}
+        onPress={() => navigation.replace('MainTab', { screen: 'Home' })}
       >
         <Text style={styles.startBtnText}>Mulai</Text>
       </TouchableOpacity>
