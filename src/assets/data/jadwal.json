@@ -1,0 +1,14 @@
+[
+  {
+    "id": 1,
+    "mapel": "Matematika",
+    "tanggal": "2025-06-20",
+    "waktu": "08:00 - 09:30"
+  },
+  {
+    "id": 2,
+    "mapel": "Bahasa Indonesia",
+    "tanggal": "2025-06-21",
+    "waktu": "10:00 - 11:30"
+  }
+]

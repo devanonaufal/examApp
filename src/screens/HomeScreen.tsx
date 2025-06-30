@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
-// Import data JSON
 import ujianData from '../assets/data/ujian.json';
 
 type HomeScreenProps = {
@@ -23,19 +22,17 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
   const renderItem = ({ item }: { item: Ujian }) => (
     <TouchableOpacity
       style={styles.card}
-      onPress={() => navigation.navigate('Exam', { ujianId: item.id })}
+      onPress={() => navigation.navigate('SoalList', { ujianId: item.id })} // navigasi ke SoalListScreen
     >
       <Text style={styles.title}>{item.title}</Text>
       <Text style={styles.desc}>{item.desc}</Text>
-      <Text style={styles.mulai}>Mulai</Text>
+      <Text style={styles.mulai}>Lihat Soal</Text>
     </TouchableOpacity>
   );
 
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Daftar Ujian</Text>
-      {/* HAPUS SEMUA tombol menu manual di bawah ini! */}
-
       <FlatList
         data={data}
         renderItem={renderItem}
