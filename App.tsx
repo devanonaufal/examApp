@@ -10,6 +10,7 @@ import ResultScreen from './src/screens/ResultScreen';
 import SoalListScreen from './src/screens/SoalListScreen';
 import DetailSoalScreen from './src/screens/DetailSoalScreen';
 import MainTab from './src/navigation/MainTab';
+import ProfileScreen from './src/screens/ProfileScreen';
 
 export type RootStackParamList = {
   Splash: undefined;
@@ -17,9 +18,10 @@ export type RootStackParamList = {
   Welcome: undefined;
   MainTab: { screen?: string } | undefined;
   SoalList: { ujianId: number };
-  DetailSoal: { soalIndex: number; ujianId: number }; // ✅ Perbaiki!
+  DetailSoal: { soalIndex: number; ujianId: number };
   Exam: undefined;
   Result: { answers: (number | null)[] };
+  Profile: undefined;
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -36,6 +38,7 @@ export default function App() {
         <Stack.Screen name="DetailSoal" component={DetailSoalScreen} options={{ headerShown: true, title: 'Detail Soal' }} />
         <Stack.Screen name="Exam" component={ExamScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Result" component={ResultScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="Profile" component={ProfileScreen} options={{ headerShown: true, title: 'Profil' }} />
       </Stack.Navigator>
     </NavigationContainer>
   );

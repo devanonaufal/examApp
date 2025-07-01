@@ -2,11 +2,11 @@
   {
     "id": 1,
     "title": "Ujian Matematika",
-    "desc": "Soal-soal Matematika Dasar"
+    "desc": "Ujian pengetahuan dasar matematika."
   },
   {
     "id": 2,
-    "title": "Ujian Bahasa Inggris",
-    "desc": "Soal latihan Bahasa Inggris"
+    "title": "Ujian IPA",
+    "desc": "Ujian ilmu pengetahuan alam."
   }
 ]

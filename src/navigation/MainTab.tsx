@@ -33,6 +33,7 @@ const MainTab = ({ route }: { route?: any }) => {
           else if (route.name === 'History') iconName = 'time-outline';
           else if (route.name === 'Jadwal') iconName = 'calendar-outline';
           else if (route.name === 'About') iconName = 'information-circle-outline';
+          // Return React element, BUKAN string!
           return <Ionicons name={iconName} size={size} color={color} />;
         }
       })}

@@ -2,20 +2,22 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { soalData } from '../api/soal';
 import { StackScreenProps } from '@react-navigation/stack';
-import { RootStackParamList } from '../../App'; // Path ke App.tsx (cek jika beda)
+import { RootStackParamList } from '../../App';
 
 type Props = StackScreenProps<RootStackParamList, 'DetailSoal'>;
 
 const DetailSoalScreen: React.FC<Props> = ({ navigation, route }) => {
-  // Ambil index dan ujianId dari params
   const { soalIndex, ujianId } = route.params;
+  // Filter soal berdasarkan ujianId
+  const filteredSoal = soalData.filter(s => s.ujianId === ujianId);
+  const soal = filteredSoal[soalIndex];
 
-  // Filter soal untuk ujian tersebut saja
-  const soalUjian = soalData.filter(s => s.ujianId === ujianId);
-
-  const soal = soalUjian[soalIndex];
-
-  if (!soal) return <Text style={{ padding: 32 }}>Soal tidak ditemukan!</Text>;
+  if (!soal)
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#fff' }}>
+        <Text style={{ color: '#d63031', fontSize: 16 }}>Soal tidak ditemukan!</Text>
+      </View>
+    );
 
   return (
     <ScrollView style={styles.container}>
@@ -40,7 +42,9 @@ const DetailSoalScreen: React.FC<Props> = ({ navigation, route }) => {
         <TouchableOpacity
           style={[styles.btn, soalIndex === 0 && styles.disabled]}
           disabled={soalIndex === 0}
-          onPress={() => navigation.replace('DetailSoal', { soalIndex: soalIndex - 1, ujianId })}
+          onPress={() =>
+            navigation.replace('DetailSoal', { soalIndex: soalIndex - 1, ujianId })
+          }
         >
           <Text style={styles.btnText}>Sebelumnya</Text>
         </TouchableOpacity>
@@ -51,9 +55,11 @@ const DetailSoalScreen: React.FC<Props> = ({ navigation, route }) => {
           <Text style={styles.btnText}>Daftar Soal</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={[styles.btn, soalIndex === soalUjian.length - 1 && styles.disabled]}
-          disabled={soalIndex === soalUjian.length - 1}
-          onPress={() => navigation.replace('DetailSoal', { soalIndex: soalIndex + 1, ujianId })}
+          style={[styles.btn, soalIndex === filteredSoal.length - 1 && styles.disabled]}
+          disabled={soalIndex === filteredSoal.length - 1}
+          onPress={() =>
+            navigation.replace('DetailSoal', { soalIndex: soalIndex + 1, ujianId })
+          }
         >
           <Text style={styles.btnText}>Selanjutnya</Text>
         </TouchableOpacity>
