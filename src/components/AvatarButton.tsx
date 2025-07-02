@@ -2,7 +2,7 @@ import React from 'react';
 import { TouchableOpacity, Image, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import type { StackNavigationProp } from '@react-navigation/stack';
-import type { RootStackParamList } from '../../App'; // Pastikan path ini benar!
+import type { RootStackParamList } from '../../App'; 
 
 const AvatarButton: React.FC = () => {
   // Gunakan StackNavigationProp supaya typesafe!

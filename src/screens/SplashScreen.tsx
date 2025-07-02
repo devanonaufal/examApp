@@ -7,11 +7,9 @@ type SplashScreenProps = {
 
 const SplashScreen: React.FC<SplashScreenProps> = ({ navigation }) => {
   useEffect(() => {
-    // Timer splash 2 detik, lalu ke DeviceCheckScreen
     const timer = setTimeout(() => {
-      navigation.replace('DeviceCheck');
-    }, 2000); // 2 detik
-
+      navigation.replace('Login'); // Pastikan screen Login terdaftar!
+    }, 2000);
     return () => clearTimeout(timer);
   }, [navigation]);
 

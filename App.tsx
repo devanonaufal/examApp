@@ -4,6 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import SplashScreen from './src/screens/SplashScreen';
 import DeviceCheckScreen from './src/screens/DeviceCheckScreen';
+import LoginScreen from './src/screens/LoginScreen';
 import WelcomeScreen from './src/screens/WelcomeScreen';
 import ExamScreen from './src/screens/ExamScreen';
 import ResultScreen from './src/screens/ResultScreen';
@@ -15,6 +16,7 @@ import ProfileScreen from './src/screens/ProfileScreen';
 export type RootStackParamList = {
   Splash: undefined;
   DeviceCheck: undefined;
+  Login: undefined;
   Welcome: undefined;
   MainTab: { screen?: string } | undefined;
   SoalList: { ujianId: number };
@@ -32,6 +34,7 @@ export default function App() {
       <Stack.Navigator initialRouteName="Splash">
         <Stack.Screen name="Splash" component={SplashScreen} options={{ headerShown: false }} />
         <Stack.Screen name="DeviceCheck" component={DeviceCheckScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Welcome" component={WelcomeScreen} options={{ headerShown: false }} />
         <Stack.Screen name="MainTab" component={MainTab} options={{ headerShown: false }} />
         <Stack.Screen name="SoalList" component={SoalListScreen} options={{ headerShown: true, title: 'Daftar Soal' }} />

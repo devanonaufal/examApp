@@ -4,7 +4,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 
 type RootStackParamList = {
   Welcome: undefined;
-  MainTab: { screen?: string } | undefined; // ← Tambahkan MainTab!
+  MainTab: { screen?: string } | undefined; 
   Exam: undefined;
   Result: { answers: (number | null)[] };
   History?: undefined;
