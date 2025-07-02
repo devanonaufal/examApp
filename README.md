@@ -1,97 +1,150 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# examApp
 
-# Getting Started
+Aplikasi Ujian Online untuk Sekolah berbasis React Native.
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+---
 
-## Step 1: Start Metro
+## Daftar Isi
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
+1. [Deskripsi Proyek](#deskripsi-proyek)
+2. [Fitur Utama](#fitur-utama)
+3. [Struktur Proyek](#struktur-proyek)
+4. [Panduan Instalasi](#panduan-instalasi)
+5. [Panduan Menjalankan](#panduan-menjalankan)
+6. [Akun Demo](#akun-demo)
+7. [Teknologi yang Digunakan](#teknologi-yang-digunakan)
+8. [Kontribusi](#kontribusi)
+9. [Kontak](#kontak)
 
-To start the Metro dev server, run the following command from the root of your React Native project:
+---
 
-```sh
-# Using npm
-npm start
+## Deskripsi Proyek
 
-# OR using Yarn
-yarn start
+examApp merupakan aplikasi mobile yang didesain khusus untuk membantu sekolah dalam menyelenggarakan ujian secara online, menyediakan navigasi yang intuitif dan pengalaman pengguna yang nyaman.
+
+---
+
+## Fitur Utama
+
+* **Splash Screen**: Halaman pembuka dengan logo aplikasi.
+* **Device Check**: Pemeriksaan kondisi perangkat (versi aplikasi, kondisi root, dan ruang penyimpanan).
+* **Login & Autentikasi**: Proses login sederhana dengan kredensial pengguna.
+* **Welcome Screen**: Halaman sambutan setelah berhasil login.
+* **Navigasi Utama**: Bottom navigation untuk mengakses Home, Riwayat, Jadwal, dan Tentang aplikasi.
+* **Daftar Ujian**: Tampilan daftar ujian dengan detail soal dan pembahasan.
+* **Pengerjaan Ujian**: Halaman ujian dengan timer untuk mengerjakan soal.
+* **Profil Pengguna**: Tampilan data pengguna diakses melalui avatar profil.
+* **Tentang Aplikasi**: Informasi mengenai aplikasi dan developer.
+
+---
+
+## Struktur Proyek
+
+```
+src/
+├── api/
+│   └── soal.tsx
+├── assets/
+│   ├── images/
+│   │   ├── logo/
+│   │   ├── avatar/
+│   │   └── exam/
+│   └── data/
+│       └── ujian.json
+├── components/
+│   └── AvatarButton.tsx
+├── navigation/
+│   └── MainTab.tsx
+└── screens/
+    ├── AboutScreen.tsx
+    ├── DeviceCheckScreen.tsx
+    ├── DetailSoalScreen.tsx
+    ├── ExamScreen.tsx
+    ├── HistoryScreen.tsx
+    ├── HomeScreen.tsx
+    ├── JadwalScreen.tsx
+    ├── LoginScreen.tsx
+    ├── ProfileScreen.tsx
+    ├── ResultScreen.tsx
+    ├── SoalListScreen.tsx
+    ├── SplashScreen.tsx
+    └── WelcomeScreen.tsx
+
+App.tsx
 ```
 
-## Step 2: Build and run your app
+---
 
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
+## Panduan Instalasi
 
-### Android
+1. Clone repository:
 
-```sh
-# Using npm
-npm run android
-
-# OR using Yarn
-yarn android
+```bash
+git clone <url-repo>
 ```
 
-### iOS
+2. Instal dependensi:
 
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
-
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
-
-```sh
-bundle install
+```bash
+npm install
 ```
 
-Then, and every time you update your native dependencies, run:
+---
 
-```sh
-bundle exec pod install
+## Panduan Menjalankan
+
+* Jalankan Metro server:
+
+```bash
+npx react-native start --reset-cache
 ```
 
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
+* Jalankan aplikasi pada emulator atau device fisik:
 
-```sh
-# Using npm
-npm run ios
+**Android**:
 
-# OR using Yarn
-yarn ios
+```bash
+npx react-native run-android
 ```
 
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
+**iOS**:
 
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
+```bash
+npx react-native run-ios
+```
 
-## Step 3: Modify your app
+---
 
-Now that you have successfully run the app, let's make changes!
+## Akun Demo
 
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
+Gunakan akun berikut untuk mencoba aplikasi:
 
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
+* **Username**: `siswa`
+* **Password**: `123456`
 
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
+---
 
-## Congratulations! :tada:
+## Teknologi yang Digunakan
 
-You've successfully run and modified your React Native App. :partying_face:
+* React Native
+* TypeScript
+* React Navigation
+* React Native Vector Icons
+* Metro Bundler
 
-### Now what?
+---
 
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
+## Kontribusi
 
-# Troubleshooting
+Kami terbuka terhadap kontribusi dalam pengembangan aplikasi ini. Silakan ajukan pull request atau hubungi kami langsung untuk kolaborasi.
 
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
+---
 
-# Learn More
+## Kontak
 
-To learn more about React Native, take a look at the following resources:
+Tim Pengembang examApp
+Email: [devanonaufal@gmail.com](mailto:admin@sphixray.com)
 
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+---
+
+© 2025 examApp | Semua Hak Dilindungi.
