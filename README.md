@@ -80,7 +80,7 @@ App.tsx
 1. Clone repository:
 
 ```bash
-git clone <url-repo>
+git clone https://github.com/devanonaufal/examApp.git
 ```
 
 2. Instal dependensi:
